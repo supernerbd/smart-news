@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Online Design Doc</title>
+<link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400italic,700' rel='stylesheet' type='text/css'>
+<style>
+	body{
+		/*background-color: #27B8E8;*/
+		font-family: 'Roboto Condensed', sans-serif;
+	}
+	div{
+		background-color: #EBEDED; /*#BCCACF;*/
+		margin-left: 30%;
+		max-width: 40%;
+		text-align: center;
+		padding: 10px;
+	}
+	h1,h2,h3,p{
+		padding: 5px;
+	}
+	p,ul{
+	font-size: 20px;
+	}
+	ul {
+     list-style-type: bullet;
+	 list-style-position: inside;
+	 text-align: left;
+	}
+	#author{
+	font-size: 16px;
+	}
+	img {
+    width: 100%;
+    height: auto;
+	border: 2px solid black;
+	}
+</style>
+</head>
+<body>
+	<div class="content">
+		<h1>Facebook News App</h1>
+		<h3>Online Design Doc</h3>
+		<p id="definition"><em>A Facebook App with news customized to the user for everyone on Facebook interested in news stories.</em></p>
+		<p id="author"> by Bernd Paulus</p>
+		<h2>Mission</h2>
+		<p>
+			This Web-App is supposed to close the gap between the Facebook News Feed and the front page of a typical news site. 
+			By analysing the Facebook data of a user it is easily possible to customize a front page for each user. Information of each user like the current position, 
+			the hometown or Likes for specific themes can be utilized. In this way a customized front page for each user is possible. Directly in Facebook with news from possibly
+			multiple sources. 
+		</p>
+		<h2>Possible Features</h2>
+		<p>Tons of features are imaginable for such an app. Here is a real big shot:
+		</p>
+			<ul>
+			<li>Getting Facebook User Data from their Social Graph API </li>
+			<li>Getting headlines, leads, links, authors and more from different news sites</li>
+			<li> Aggregating this news stories together with Facebook User Data and build up different sections:</li>
+			<ul>
+				<li>Where does the user live? Bring news from around his home</li>
+				<li>Where is the user at the moment? Bring news from there</li>
+				<li>Where is the user often besides home (Work, Holiday, old home)? Bring news from such regions</li>
+				<li>Which Facebook entities does the user like? Bring news from that. Examples: User liked the NFL; bring up a section with last/upcoming games. User liked Star XY; bring stories with Star XY</li>
+			</ul>
+			<li>Algorithm to decide exact placing of story and decide which source to use (based on user data)</li>
+			<li>Everything of this with nice UI running seamlessly in the Facebook website</li>
+			<li>Further customizable UI (by the user) expending/decreasing sections, bringing in view sections which didn’t seemed to fit (after looking at the Facebook data) etc. </li>
+			<li>Storing of this user preferences (local storage, cookie or server)</li>
+			<li>Extensive fall back solutions: If user data is restricted get for example position over the device, if one source is offline use another etc.</li>
+			</ul>
+		<h2>Features</h2>
+		<p>
+		My approach is mainly restricted by two reasons: lack of time and lack of open APIs. Whereas there are tons of APIs from news sites only one is fully open to everyone 
+		<a href="http://open-platform.theguardian.com/" target="blank">(The Guardian)</a> and only one is briefly restricted <a href="http://developer.nytimes.com/" target="blank">(The New York Times)</a>. (In both cases certain volume restrictions apply, but that is a secondary problem for this project.)  
+		Every other API of a big news site in English is heavily restricted. While The Guardian even sends full texts over their API and The New York Times at least headlines, 
+		leads, links and authors every other API in the news sector want payments. That is why I will work mostly with The Guardian API. (The New York Times API is only part 
+		of a stretch goal.) The time restriction mainly means that I will only use a tiny fraction of the Facebook user data to build the customized front page.
+		</p>
+		<ul>
+		<li>Getting Facebook User Data from their <a href="https://developers.facebook.com/docs/graph-api" target="blank">Social Graph API</a></li>
+		<li>Getting news stories from <a href="http://open-platform.theguardian.com/" target="blank">The Guardian API</a></li>
+		<li>Order this news stories (or queries for the API call) with the help of the Facebook User Data in sections</li>
+		<li>Build sections after the users location and home on country scale (On city/region scale is a stretch goal. I can get Guardian stories easily sorted by their country. To sort it by City/region is much harder.)</li>
+		<li>Customizable UI with user control over sections sizes and content</li>
+		<li>Storing user preferences in local storage</li>
+		<li>Providing simple fall back solutions</li>
+		<li>Stretch Goal: Get App working as Facebook Web App (seamless in Facebook)</li>
+		<li>Stretch Goal: Build sections after Facebook Entities (Likes)</li>
+		<li>Stretch Goal: Extensive fall back solutions, like location detection</li>
+		<li>Stretch Goal: Bring in second news source <a href="http://developer.nytimes.com/" target="blank">(The New York Times)</a></li>
+		</ul>
+		<p>
+		Stretch Goals are ordered in the way I want to implement them, when I got time left. 
+		</p>
+		<h2>Used Web Services</h2>
+		<p>
+			<ul>
+			<li><a href="https://developers.facebook.com/docs/graph-api" target="blank">Facebook Social Graph API</a></li>
+			<li><a href="https://developers.facebook.com/docs/games/canvas" target="blank">Facebook App API</a></li>
+			<li><a href="http://open-platform.theguardian.com/" target="blank">The Guardian API</a></li>
+			<li><a href="http://jquery.com/" target="blank">JQuery</a></li>
+			<li><a href="http://jqueryui.com/" target="blank">JQuery UI</a></li>
+			</ul>
+		</p>
+		<h2>UI</h2>
+		<p>
+		The user gets multiple sections with different articles customized for him. For each article the user sees at least the headline together with a link to the article. 
+		(I won’t show any full texts inside the app. To read the full article the user has to click the link and is taken to the news stories website.) Some sections contain 
+		also a lead and the author of an article. The size of the sections (and with it the number of articles included) is customizable by the user as well as the positions 
+		of the sections. Sections are addable and droppable. 
+		</p>
+		<img src="mockUp.png" alt="Mock Up" />
+	</div>
+</body>
+</html>
