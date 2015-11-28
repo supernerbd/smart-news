@@ -19,7 +19,7 @@ app.content= (function(){
 	.location (land or world)
 	.edition (uk/us/au)
 	.interest (...)
-	.number (of articles to output)
+	.number (of articless to output)
 	*/
 	function getGuardian(obj){
 		//vars
@@ -32,10 +32,6 @@ app.content= (function(){
 		//Build URL with obj
 		
 		if(obj.location){
-			if(obj.edition){
-				url += obj.edition;
-				url += "/";
-			}
 			if(obj-location=="world"){
 				url += obj.location;
 			}
@@ -71,7 +67,42 @@ app.content= (function(){
 	};
 	
 	function receive(obj){
-		console.log("obj stringified = " + JSON.stringify(obj));
+				// if there's an error, print a message and return
+		if(obj.response.status=="error"){
+			var status = obj.response.status;
+			var message = obj.response.message;
+			document.querySelector(section).innerHTML = "<h3><b>Error!</b></h3>" + "<p><i>" + status + "</i><p>" + "<p><i>" + message + "</i><p>";
+			$(section).fadeIn(500);
+			return; // Bail out
+		}
+		
+		// If there is an array of results, loop through them
+		var articles = obj.response.results;
+		//console.log("articles.length = " + articles.length);
+		var bigString;
+		
+		// loop through events here
+		// concatenate HTML to bigString as necessary
+		for (var i=0;i<articles.length;i++){
+			var article = articles[i];
+			
+			var title = article.webTitle;
+			var date = article.webPublicationDate;
+			var url = article.webUrl;
+			var lead = article.fields.trailText;
+			var author = article.fields.byline;
+			
+			var line = "<div class='article'>";
+			line += "<h4>" + title + "</h4><br>";
+			line += "<p>" + lead + ". " + " <a href='" + url + "' target='_blank'>Read more</a></p><br> ";
+			line += "<small><i> Author: " + author + ". Date:" + date + "</i></small><br>";
+			line += "</div>";
+			bigString += line;
+			bigString += "<hr />";
+		}
+		
+		document.querySelector(section).innerHTML = bigString;
+		$(section).fadeIn(500);
 	};
 	
 	//Functions to public
