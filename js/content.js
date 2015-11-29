@@ -9,7 +9,7 @@ var app = app || {};
 
 app.content= (function(){
 	//vars
-	var section;
+	//var section;
 	
 	//get Content from the Guardian. 
 	/*
@@ -22,17 +22,18 @@ app.content= (function(){
 	.number (of articless to output)
 	*/
 	function getGuardian(obj){
+		console.log("getGuardian called");
 		//vars
 		var url = "http://content.guardianapis.com/";
 		var fields = "&show-fields=byline,trailText";
 		var key = "?api-key=czwd98htekjvaagsapfur98h";
 		var size = "&page-size=";
 		//set section
-		section = obj.section;
+		//section = obj.section;
 		//Build URL with obj
 		
 		if(obj.location){
-			if(obj-location=="world"){
+			if(obj.location=="world"){
 				url += obj.location;
 			}
 			else{
@@ -62,11 +63,14 @@ app.content= (function(){
 		  dataType: "jsonp",
 		  url: url,
 		  data: null,
-		  success: receive
+		  success: function(data){
+		  receive(data, obj.section)
+		  }
 		});
 	};
 	
-	function receive(obj){
+	function receive(obj, section){
+		console.log("receive called");
 				// if there's an error, print a message and return
 		if(obj.response.status=="error"){
 			var status = obj.response.status;
@@ -78,8 +82,14 @@ app.content= (function(){
 		
 		// If there is an array of results, loop through them
 		var articles = obj.response.results;
-		//console.log("articles.length = " + articles.length);
+		//establish bigString
 		var bigString;
+		if(obj.response.edition){
+			bigString+="<h3>"+obj.response.edition.webTitle+"</h3><hr />";
+		}
+		if(obj.response.tag){
+			bigString+="<h3>"+obj.response.tag.webTitle+"</h3><hr />";
+		}
 		
 		// loop through events here
 		// concatenate HTML to bigString as necessary
@@ -93,10 +103,10 @@ app.content= (function(){
 			var author = article.fields.byline;
 			
 			var line = "<div class='article'>";
-			line += "<h4>" + title + "</h4><br>";
-			line += "<p>" + lead + ". " + " <a href='" + url + "' target='_blank'>Read more</a></p><br> ";
-			line += "<small><i> Author: " + author + ". Date:" + date + "</i></small><br>";
-			line += "</div>";
+			line += "<a href='" + url + "' target='_blank'><h4>" + title + "</h4>";
+			line += "<p>" + lead + ".</p> ";
+			line += "<small><i> Author: " + author + ". Date:" + date + "</i></small>";
+			line += "</a></div>";
 			bigString += line;
 			bigString += "<hr />";
 		}
