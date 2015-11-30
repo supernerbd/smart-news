@@ -26,6 +26,7 @@ app.main= (function(){
 	content.getGuardian({section: "#d1", number: 7, location: "world"});
 	content.getGuardian({section: "#d2", number: 3, location: "germany"});
 	content.getGuardian({section: "#d3", number: 3, interest: "sport"});
+	content.getGuardian({section: "ticker", number: 5, interest: "football"});
 	//hide loading screen
 	$("#loading").fadeOut();
 	};
