@@ -15,6 +15,7 @@ app.main= (function(){
 	
 	
 	function init(){ //Init app
+	console.log("site");
 	//init modules
 	content = app.content;
 	
@@ -35,5 +36,3 @@ app.main= (function(){
 		init: init
 	}
 }());
-//when site loaded
-window.onload = app.main.init;

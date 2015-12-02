@@ -60,6 +60,7 @@ app.content= (function(){
 		}
 		
 		//make request
+		$.ajaxSetup({ cache: false }); //Guardian content should not be cached
 		$.ajax({
 		  dataType: "jsonp",
 		  url: url,
