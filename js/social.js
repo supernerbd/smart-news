@@ -13,7 +13,7 @@ app.social= (function(){
 	//vars
 	var canvas = false;
 	var facebook;
-	var permissions = 'public_profile,email';
+	var permissions = 'public_profile,user_hometown,user_likes,user_location';
 	//INIT:
 	function init(){
 		console.log("dom");
@@ -81,7 +81,7 @@ app.social= (function(){
 				fbLoginCallback(data);
 			}
 			else{ //change welcome screen text
-				document.querySelector("#welcome").querySelector("p").innerHTML="Sorry! Without your facebook data the app can not be uses. You can invoke the dialog again on the button.";
+				document.querySelector("#welcome").querySelector("p").innerHTML="Sorry! Without your facebook data the app can not be used. You can invoke the dialog again on the button.";
 				document.querySelector("#welcome").style.display="inherit";
 			}
 		}, //permissions asked
