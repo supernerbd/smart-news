@@ -110,11 +110,11 @@ app.social= (function(){
 		fbData.locationCountry = data.location.location.country;
 		fbData.likeCategories = [];
 		
-		/* get data.likes.data[i].category and if(category exists in fbData.likeCategories){count +1] else write category!?
+		//build likeCategories Array
 		for (var i=0; i<data.likes.data.length; i++){
-			
+			fbData.likeCategories[i] = data.likes.data[i].category;
 		}
-		*/
+		
 		console.log(fbData);
 	};
 	
