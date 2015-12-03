@@ -31,6 +31,7 @@ app.main= (function(){
 	//hide loading screen
 	$("#loading").fadeOut();
 	};
+	
 
 	return{
 		init: init

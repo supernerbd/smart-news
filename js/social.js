@@ -12,7 +12,7 @@ var app = app || {};
 app.social= (function(){
 	//vars
 	var canvas = false;
-	var facebook;
+	var fbData = {};
 	var permissions = 'public_profile,user_hometown,user_likes,user_location';
 	//INIT:
 	function init(){
@@ -49,6 +49,8 @@ app.social= (function(){
 	function fbLoginCallback(data){
 		if(data.status === "connected"){ //User is connected to facebook and app -> get Data
 			console.log("connected");
+			fbGetData();
+			app.main.init();
 		}
 		else{ //user is not connected to facebook (status="unknown") or not connected to the app (status="not_authorized") -> start fb login dialog
 			console.log("start login");
@@ -93,7 +95,31 @@ app.social= (function(){
 	//likes (take entetie id and get category) or count likes at endpoints music, favorite_teams, favorite_athletes, books, television etc. 
 	//location, hometown, last checkin
 	//(get like names and search for news on them in guardian?)
+	function fbGetData(){
+		//ask for hometown, location and likes
+		FB.api('/me?fields=hometown{location},location{location},likes.limit(1000){category}', fbGetDataCallback);
+	};
 	
+	function fbGetDataCallback(data){
+		//receive data, write hometown and location in fbData Obj, count like categorys and write categories in obj
+		console.log("got fb data");
+		//console.log(JSON.stringify(data));
+		
+		//build fb data obj
+		fbData.homeCountry = data.hometown.location.country;
+		fbData.locationCountry = data.location.location.country;
+		fbData.likeCategories = [];
+		
+		/* get data.likes.data[i].category and if(category exists in fbData.likeCategories){count +1] else write category!?
+		for (var i=0; i<data.likes.data.length; i++){
+			
+		}
+		*/
+		console.log(fbData);
+	};
+	
+	
+	//get country "number"?fields=location
 	//HELPER
 	//find out if app is run in an iframe
 	//function found here: http://stackoverflow.com/questions/326069/how-to-identify-if-a-webpage-is-being-loaded-inside-an-iframe-or-directly-into-t
@@ -108,6 +134,8 @@ app.social= (function(){
 	//public interface
 	return{
 		init: init,
-		fbLoginButton: fbLoginButton
+		fbLoginButton: fbLoginButton,
+		fbGetData: fbGetData,
+		fbData: fbData
 	}
 }());

@@ -73,6 +73,7 @@ app.content= (function(){
 	
 	function receive(obj, section){
 		console.log("receive called");
+		//console.log(JSON.stringify(obj));
 		//if it's ticker data call ticker function
 		if(section=="ticker"){
 			setTicker(obj);
