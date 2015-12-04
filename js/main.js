@@ -13,6 +13,8 @@ app.main= (function(){
 	//vars
 	var content;
 	var fbData;
+	var category;
+	var guardian;
 	
 	function init(){ //Init rest of app. Is called by social.fbGetDataCallback() to make sure facebook data is loaded.
 		console.log("site");
@@ -23,7 +25,7 @@ app.main= (function(){
 		fbData= app.social.fbData;
 		console.log(fbData);
 		//determine content for sections
-		test(fbData);
+		categoryCount();
 		//get Content
 		content.getGuardian({section: "#d1", number: 7, location: "world"});
 		content.getGuardian({section: "#d2", number: 3, location: "germany"});
@@ -33,26 +35,30 @@ app.main= (function(){
 		$("#loading").fadeOut();
 	};
 	
-	function test(data){
-		var cat={
-			"Media/News/Publishing": "media",
-			"Education": "education",
-			"Musician/Band": "music"
-		};
-		Object.seal(cat);
-		console.log(cat);
-		var guardian={};
-		guardian.media = 0;
-		guardian.education = 0;
-		guardian.music = 0;
+	//load the two json objs. Than run code..
+	function categoryCount(){
+		if(!guardian){
+			$.getJSON("json/guardian.json", function(data){
+				guardian = data;
+				categoryCount();
+			});
+			return;
+		}
+		if(!category){
+			$.getJSON("json/fbCategories.json", function(data){
+				category = data;
+				categoryCount();
+			});
+			return;
+		}
 		Object.seal(guardian);
-		console.log(guardian);
-		for (var i=0; i<data.likeCategories.length; i++){
+		Object.seal(category);
+		for (var i=0; i<fbData.likeCategories.length; i++){
 			try {
-				var first = cat[data.likeCategories[i]];
+				var first = category[fbData.likeCategories[i]];
 				guardian[first]++;
 			} catch (e) {
-				console.log("unknown category");
+				console.log("unknown category " + category[fbData.likeCategories[i]]);
 			}
 		}
 		console.log(guardian);
