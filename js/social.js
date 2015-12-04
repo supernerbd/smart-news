@@ -50,7 +50,6 @@ app.social= (function(){
 		if(data.status === "connected"){ //User is connected to facebook and app -> get Data
 			console.log("connected");
 			fbGetData();
-			app.main.init();
 		}
 		else{ //user is not connected to facebook (status="unknown") or not connected to the app (status="not_authorized") -> start fb login dialog
 			console.log("start login");
@@ -92,8 +91,8 @@ app.social= (function(){
 	};
 	//FB DATA:
 	//get Data from graph api (user endpoint: https://developers.facebook.com/docs/graph-api/reference/user)
-	//likes (take entetie id and get category) or count likes at endpoints music, favorite_teams, favorite_athletes, books, television etc. 
-	//location, hometown, last checkin
+	//likes (take entetie id and get category) (or count likes at endpoints music, favorite_teams, favorite_athletes, books, television etc. )
+	//location, hometown, (last checkin)
 	//(get like names and search for news on them in guardian?)
 	function fbGetData(){
 		//ask for hometown, location and likes
@@ -115,7 +114,8 @@ app.social= (function(){
 			fbData.likeCategories[i] = data.likes.data[i].category;
 		}
 		
-		console.log(fbData);
+		app.main.init(); //make sure that facebook data is loaded before calling the rest of the app.
+		return fbData;
 	};
 	
 	
