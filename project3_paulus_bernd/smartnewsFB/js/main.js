@@ -3,6 +3,7 @@ main.js
 */
 "use strict";
 
+//fb List from: http://stackoverflow.com/questions/4216648/facebook-pages-authoritative-list-of-categories
 // if app exists use the existing copy
 // else create a new empty object literal
 var app = app || {};
@@ -41,7 +42,7 @@ app.main= (function(){
 			if(e.target.checked){ 
 				store=true;
 				storage.write(true);
-				document.location.reload();
+				//document.location.reload();
 			}
 			else{ 
 				store=false; 
@@ -61,7 +62,7 @@ app.main= (function(){
 			});
 			return;
 		}
-		if(!category){ //fb List from: http://stackoverflow.com/questions/4216648/facebook-pages-authoritative-list-of-categories
+		if(!category){
 			//get category json
 			$.getJSON("json/fbCategories.json", function(data){
 				category = data;
@@ -176,7 +177,7 @@ app.main= (function(){
 		var obj = storage.read();
 		obj[string] -= 50;
 		storage.write(obj);
-		document.location.reload();
+		//document.location.reload();
 	};
 	
 	function plus(string){ //upgrade category
