@@ -2,105 +2,27 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<style>
-	@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300italic,700);
-	body{
-		font-family: 'Roboto Condensed', sans-serif;
-	}
-	#loading{
-		background-color: white;
-		z-index: 2;
-		text-align: center;
-		vertical-align: bottom;
-		position: fixed;
-		top: 0;
-		left:0;
-	}
-	#welcome{
-		background-color: white;
-		z-index: 3;
-		text-align: center;
-		vertical-align: bottom;
-		position: fixed;
-		top: 0;
-		left:0;
-		display: none;
-	}
-	h1{
-		margin-top: 23%;
-		
-	}
-	#ticker h2{
-		display: none;
-		padding: 0px;
-		margin: 0px;
-		text-align: center;
-	}
-	
-	#ticker h2 a:link{
-		color: black;
-		text-decoration: none;
-	}
-	
-	#content{
-		padding: 5px;
-		margin: 5px;
-	}
-	#ticker{
-		border: 1px solid black;
-		padding: 5px;
-		margin: 5px;
-	}
-	#d1{
-		float: left;
-		height: 100%;
-		width: 47%;
-		border: 1px solid black;
-		padding: 5px;
-		margin: 5px;
-	}
-	#d2{
-		border: 1px solid black;
-		float: right;
-		width: 47%;
-		padding: 5px;
-		margin: 5px;
-	}
-	#d3{
-		border: 1px solid black;
-		float: right;
-		width: 47%;
-		padding: 5px;
-		margin: 5px;
-	}
-	.article{
-		text-align: center;
-	}
-	.article a:link{
-		color: black;
-		text-decoration: none;
-	}
-	.article a:visited{
-		color: black;
-		text-decoration: none;
-	}
-	h4{
-		padding: 0px;
-		margin: 0px;
-	}
-	p{
-		padding: 0px;
-		margin: 0px;
-	}
-	</style>
-	
-	<title>News</title>
+	<style>	@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300italic,700);</style>
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+	<title>smartNews</title>
 </head>
 <body>
-	<div id="loading"> <h1>Loading ...</h1> </div>	
+	<div id="loading"> <h1>Loading ...</h1> 
+		<div id="progressbar"></div>
+		<script>
+			//JQuerry UI init
+			$( "#progressbar" ).progressbar({
+			  value: false
+			});
+			$( document ).tooltip();
+		</script>
+	</div>	
 	<div id="welcome"> 
 		<h1>Please login to facebook</h1> 
-		<p>Unfortunately, this web app doesn't work without facebook. We will ask you to grant permission to the following facebook data: ... <br>We need this data to personalize your experience.
+		<p>Unfortunately, this web app doesn't work without facebook. <br> We will ask you to grant permission to the following facebook data: <strong>Your public profile, hometown, location and likes.</strong> <br>We need this data to personalize your experience.
 		The data wont be stored on our server. Thank you! </p>
 		<button onclick="app.social.fbLoginButton()">Login to facebook</button>
 	</div>	
@@ -109,8 +31,6 @@
 		document.querySelector("#loading").style.height=window.innerHeight+"px";
 		document.querySelector("#loading").style.width=window.innerWidth+"px";
 	</script>
-	<!--<h1>Loading...</h1>-->
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="js/social.js"></script>
 	<script src="js/storage.js"></script>
 	<script src="js/content.js"></script>
@@ -126,25 +46,13 @@
 		<div id="d1"> Content<br>d1 </div>
 		<div id="d2"> Content <br>d2</div>
 		<div id="d3"> Content <br>d3 </div>
+	<footer>
+		<p><a href="#" title="If checked you allow us to store some data on your device. We store your preferences and sections last seen to enhance your experience.">Use local storage<input type="checkbox" checked id="store"></a> | © Bernd Paulus, 2015. <a href="http://www.theguardian.com" target="blank"><img src="http://image.guardian.co.uk/sys-images/Guardian/Pix/pictures/2010/03/01/poweredbyguardianBLACK.png" alt="guardian logo" /></a></p>
+	</footer>
 	</div>
-	<!--<div id="controls">
-	<fieldset>
-	<label> Edition
-		<select id="editionSelect" >
-				<option value="none">None</option>
-				
-				<option value="uk">UK</option>
-				<option value="us">US</option>
-				<option value="au">AU</option>
-			</select>
-	</label>
-	</fieldset>
-	</div>-->
 	<script>
-	//when DOM loaded -> Init fb connection and after that call app.main.init
-	$(document).ready(app.social.init);
-	//when site loaded
-	//window.onload = app.main.init;
+		//when DOM loaded -> Init fb connection and after that call app.main.init
+		$(document).ready(app.social.init);
 	</script>
 </body>
 </html>

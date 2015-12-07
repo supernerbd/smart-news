@@ -3,8 +3,6 @@ social.js
 */
 "use strict";
 
-//TODO: 
-
 // if app exists use the existing copy
 // else create a new empty object literal
 var app = app || {};
@@ -16,12 +14,10 @@ app.social= (function(){
 	var permissions = 'public_profile,user_hometown,user_likes,user_location';
 	//INIT:
 	function init(){
-		console.log("dom");
 		//determine if in browser or facebook canvas
 		//The login to facebook is slightly different between the facebook canvas and a normal website. Facebook canvas is an iframe, so I check if the app is run in an iframe.
 		if(inIframe()){
 			canvas=true;
-			console.log("facebook canvas");
 		}
 		//connect to facebook api
 		$.getScript('//connect.facebook.net/en_US/sdk.js', function(){
@@ -33,7 +29,6 @@ app.social= (function(){
 		});     
 		//login to facebook/ get user permission
 		fbLogin();
-		console.log("fb success");
 		});
 		
 		
@@ -48,11 +43,9 @@ app.social= (function(){
 	//handles callbacks from fbLogin()
 	function fbLoginCallback(data){
 		if(data.status === "connected"){ //User is connected to facebook and app -> get Data
-			console.log("connected");
 			fbGetData();
 		}
 		else{ //user is not connected to facebook (status="unknown") or not connected to the app (status="not_authorized") -> start fb login dialog
-			console.log("start login");
 			//if canvas -> ask for permissions
 			if (canvas){
 				FB.login(function(data){
@@ -91,9 +84,7 @@ app.social= (function(){
 	};
 	//FB DATA:
 	//get Data from graph api (user endpoint: https://developers.facebook.com/docs/graph-api/reference/user)
-	//likes (take entetie id and get category) (or count likes at endpoints music, favorite_teams, favorite_athletes, books, television etc. )
-	//location, hometown, (last checkin)
-	//(get like names and search for news on them in guardian?)
+	//location, hometown, likes
 	function fbGetData(){
 		//ask for hometown, location and likes
 		FB.api('/me?fields=hometown{location},location{location},likes.limit(1000){category}', fbGetDataCallback);
@@ -101,14 +92,23 @@ app.social= (function(){
 	
 	function fbGetDataCallback(data){
 		//receive data, write hometown and location in fbData Obj, count like categorys and write categories in obj
-		console.log("got fb data");
-		//console.log(JSON.stringify(data));
 		
 		//build fb data obj
-		fbData.homeCountry = data.hometown.location.country;
-		fbData.locationCountry = data.location.location.country;
 		fbData.likeCategories = [];
 		
+		if(data.hometown.location.country){
+			fbData.homeCountry = data.hometown.location.country;
+		}
+		else{ //set it to world when not existent
+			fbData.homeCountry = "world";
+		}
+		if(data.location.location.country){
+			fbData.locationCountry = data.location.location.country;
+		}
+		else{ //set it to world when not existent
+			fbData.locationCountry = "world";
+		}
+
 		//build likeCategories Array
 		for (var i=0; i<data.likes.data.length; i++){
 			fbData.likeCategories[i] = data.likes.data[i].category;
@@ -118,8 +118,6 @@ app.social= (function(){
 		return fbData;
 	};
 	
-	
-	//get country "number"?fields=location
 	//HELPER
 	//find out if app is run in an iframe
 	//function found here: http://stackoverflow.com/questions/326069/how-to-identify-if-a-webpage-is-being-loaded-inside-an-iframe-or-directly-into-t
@@ -136,6 +134,7 @@ app.social= (function(){
 		init: init,
 		fbLoginButton: fbLoginButton,
 		fbGetData: fbGetData,
-		fbData: fbData
+		fbData: fbData,
+		inIframe: inIframe
 	}
 }());

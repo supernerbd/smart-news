@@ -23,23 +23,26 @@ app.content= (function(){
 	.number (of articless to output)
 	*/
 	function getGuardian(obj){
-		console.log("getGuardian called");
 		//vars
 		var url = "http://content.guardianapis.com/";
 		var fields = "&show-fields=byline,trailText";
 		var key = "?api-key=czwd98htekjvaagsapfur98h";
 		var size = "&page-size=";
-		//set section
-		//section = obj.section;
+		var interest = "";
+
 		//Build URL with obj
 		
 		if(obj.location){
+			obj.location = obj.location.toLowerCase();
 			if(obj.location=="world"){
 				url += obj.location;
 			}
 			else{
 				url += "world/";
 				url += obj.location;
+			}
+			if(obj.location == "united states"){
+				url = "http://content.guardianapis.com/us-news";
 			}
 			url += key;
 			url += fields;
@@ -57,6 +60,7 @@ app.content= (function(){
 			url += fields;
 			url += size;
 			url += obj.number;
+			interest = obj.interest;
 		}
 		
 		//make request
@@ -66,14 +70,12 @@ app.content= (function(){
 		  url: url,
 		  data: null,
 		  success: function(data){
-		  receive(data, obj.section)
+		  receive(data, obj.section, interest)
 		  }
 		});
 	};
 	
-	function receive(obj, section){
-		console.log("receive called");
-		//console.log(JSON.stringify(obj));
+	function receive(obj, section, interest){ //callback function
 		//if it's ticker data call ticker function
 		if(section=="ticker"){
 			setTicker(obj);
@@ -94,16 +96,16 @@ app.content= (function(){
 		//establish bigString
 		var bigString;
 		if(obj.response.edition){
-			bigString="<h3>"+obj.response.edition.webTitle+"</h3><hr />";
+			bigString="<div class='header'><h3>"+obj.response.edition.webTitle+"</h3><a href='#' title='Show me more of this in the future'><button class='plus' onclick='app.main.plus(\""+interest+"\")'>+</button></a><a href='#' title='Show me less of this in the future'><button class='minus' onclick='app.main.minus(\""+interest+"\")'>-</button></a></div><hr />";
 		}
 		if(obj.response.section){
-			bigString="<h3>"+obj.response.section.webTitle+"</h3><hr />";
+			bigString="<div class='header'><h3>"+obj.response.edition.webTitle+"</h3><a href='#' title='Show me more of this in the future'><button class='plus' onclick='app.main.plus(\""+interest+"\")'>+</button></a><a href='#' title='Show me less of this in the future'><button class='minus' onclick='app.main.minus(\""+interest+"\")'>-</button></a></div><hr />";
 		}
 		if(obj.response.tag){
-			bigString="<h3>"+obj.response.tag.webTitle+"</h3><hr />";
+			bigString="<div class='header'><h3>"+obj.response.edition.webTitle+"</h3><a href='#' title='Show me more of this in the future'><button class='plus' onclick='app.main.plus(\""+interest+"\")'>+</button></a><a href='#' title='Show me less of this in the future'><button class='minus' onclick='app.main.minus(\""+interest+"\")'>-</button></a></div><hr />";
 		}
 		
-		// loop through events here
+		// loop through articles here
 		// concatenate HTML to bigString as necessary
 		for (var i=0;i<articles.length;i++){
 			var article = articles[i];
